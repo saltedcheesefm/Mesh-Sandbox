@@ -1,0 +1,49 @@
+plugins {
+    id 'net.fabricmc.fabric-loom' version '1.17.11'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    mavenCentral()
+    maven { url = "https://api.modrinth.com/maven" }
+    maven { url = "https://maven.skye.vg" }
+    maven { url = "https://repo.opencollab.dev/main/" }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+    modImplementation "maven.modrinth:qANg5Jrr:${project.e4mc_version}"
+    include "maven.modrinth:qANg5Jrr:${project.e4mc_version}"
+
+    modImplementation "maven.modrinth:wKkoqHrH:${project.geyser_version}"
+    include "maven.modrinth:wKkoqHrH:${project.geyser_version}"
+
+    implementation "org.bitlet:weupnp:0.1.4"
+    include "org.bitlet:weupnp:0.1.4"
+}
+
+processResources {
+    inputs.property "version", project.version
+    filteringCharset "UTF-8"
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 25
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
